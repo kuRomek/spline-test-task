@@ -742,7 +742,7 @@ PlayerSettings:
   XboxOneOverrideIdentityPublisher: 
   vrEditorSettings: {}
   cloudServicesEnabled:
-    Collab: 1
+    Collab: 0
   luminIcon:
     m_Name: 
     m_ModelFolderPath: 
@@ -755,7 +755,7 @@ PlayerSettings:
     m_VersionCode: 1
     m_VersionName: 
   apiCompatibilityLevel: 6
-  activeInputHandler: 0
+  activeInputHandler: 2
   windowsGamepadBackendHint: 0
   cloudProjectId: 83d848a3-8b79-4548-8a72-1f35ab3e1ed9
   framebufferDepthMemorylessMode: 0
