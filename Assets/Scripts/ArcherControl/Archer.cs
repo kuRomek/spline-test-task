@@ -9,13 +9,16 @@ namespace ArcherControl
     public class Archer : Transformable, IActivatable, IUpdatable
     {
         private readonly PlayerInputController _input;
+        private readonly Arrow _arrow;
         private readonly ArrowPuller _arrowPuller;
         private bool _isPullingArrow = false;
 
-        public Archer(PlayerInputController input, ArrowPuller arrowPuller, Vector2 position) : base(position)
+        public Archer(PlayerInputController input, ArrowPuller arrowPuller, Arrow arrow, Vector2 position) : base(position)
         {
             _input = input;
+            _arrow = arrow;
             _arrowPuller = arrowPuller;
+            _arrow.gameObject.SetActive(false);
         }
 
         public event Action PullingStarted;
@@ -53,9 +56,18 @@ namespace ArcherControl
 
         private void CancelPulling()
         {
+            if (_isPullingArrow == false)
+                return;
+
             _isPullingArrow = false;
             _arrowPuller.transform.position = _arrowPuller.OriginalPosition;
             PullingCanceled?.Invoke();
+        }
+
+        public void ThrowArrow(Vector2 velocity, Vector2 startPositino)
+        {
+            _arrow.transform.position = startPositino;
+            _arrow.Throw(velocity);
         }
     }
 }

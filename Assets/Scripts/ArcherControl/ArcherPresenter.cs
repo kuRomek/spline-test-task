@@ -13,11 +13,6 @@ namespace ArcherControl
                 enabled = false;
         }
 
-        private void Start()
-        {
-            View.CanceledPulling();
-        }
-
         public void Enable()
         {
             if (Model != null)
@@ -25,6 +20,7 @@ namespace ArcherControl
                 Model.PullingStarted += View.StartPullingArrow;
                 Model.PullingArrow += View.PullArrowBone;
                 Model.PullingCanceled += View.CanceledPulling;
+                View.ThrowingArrow += Model.ThrowArrow;
             }
         }
 
@@ -35,6 +31,7 @@ namespace ArcherControl
                 Model.PullingStarted -= View.StartPullingArrow;
                 Model.PullingArrow -= View.PullArrowBone;
                 Model.PullingCanceled -= View.CanceledPulling;
+                View.ThrowingArrow -= Model.ThrowArrow;
             }
         }
     }
