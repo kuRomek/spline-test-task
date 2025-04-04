@@ -24,7 +24,6 @@ namespace ArcherControl
         private Vector2 _pullingVector;
         private Bone _bowTiltBone;
         private Bone _arrowBone;
-        private Vector2 _pullPointOffset = new Vector2(0.5f, 1.5f);
         private Coroutine _waitingCoroutine;
 
         public Action<Vector2, Vector2> ThrowingArrow;
@@ -46,31 +45,35 @@ namespace ArcherControl
 
         public void PullArrowBone(Vector2 position)
         {
-            _pullingVector = _skeletonAnimation.transform.InverseTransformPoint(position);
-            _pullingVector -= _pullPointOffset;
+            Vector2 pullingVector = (Vector2)_skeletonAnimation.transform.InverseTransformPoint(position) -
+                _arrowBone.GetSkeletonSpacePosition();
 
-            if (_pullingVector.x < -0.5f)
-            {
-                _bowTiltBone.Rotation = Vector2.SignedAngle(Vector2.left, _pullingVector);
-                _spriteShapeController.transform.position = _arrowBone.GetWorldPosition(_skeletonAnimation.transform);
-                _arrowTrajectory.Update(-_pullingVector * 3f);
-            }
+            if (pullingVector.x > -0.5f)
+                return;
+
+            _pullingVector = pullingVector;
+
+            Vector2 arrowWorldPosition = _arrowBone.GetWorldPosition(_skeletonAnimation.transform);
+
+            _bowTiltBone.Rotation = Vector2.SignedAngle(Vector2.left, _pullingVector);
+            Debug.DrawRay(arrowWorldPosition, position - arrowWorldPosition, Color.red);
+            _spriteShapeController.transform.position = arrowWorldPosition;
+            _arrowTrajectory.Update(-_pullingVector * 3f);
         }
 
-        public void CanceledPulling()
+        public void OnPullingCanceled()
         {
             _bowTiltBone.Rotation = 0f;
             _skeletonAnimation.AnimationState.SetAnimation(1, _attackFinishAnimation, false);
-            _skeletonAnimation.AnimationState.AddAnimation(1, _idleAnimation, true, 1f);
 
             ThrowingArrow?.Invoke(-_pullingVector * 3f, _arrowBone.GetWorldPosition(_skeletonAnimation.transform));
-            _spriteShapeController.gameObject.SetActive(false);
+            //_spriteShapeController.gameObject.SetActive(false);
             _waitingCoroutine = StartCoroutine(WaitForThrowingAnimation());
         }
 
         private IEnumerator WaitForThrowingAnimation()
         {
-            float waitingTime = 1f;
+            float waitingTime = 0.5f;
             float accumTime = 0f;
 
             WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
@@ -82,6 +85,8 @@ namespace ArcherControl
 
                 yield return waitForFixedUpdate;
             }
+
+            _skeletonAnimation.AnimationState.SetAnimation(1, _idleAnimation, true);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace ArcherControl
             {
                 Model.PullingStarted += View.StartPullingArrow;
                 Model.PullingArrow += View.PullArrowBone;
-                Model.PullingCanceled += View.CanceledPulling;
+                Model.PullingCanceled += View.OnPullingCanceled;
                 View.ThrowingArrow += Model.ThrowArrow;
             }
         }
@@ -30,7 +30,7 @@ namespace ArcherControl
             {
                 Model.PullingStarted -= View.StartPullingArrow;
                 Model.PullingArrow -= View.PullArrowBone;
-                Model.PullingCanceled -= View.CanceledPulling;
+                Model.PullingCanceled -= View.OnPullingCanceled;
                 View.ThrowingArrow -= Model.ThrowArrow;
             }
         }

@@ -5,20 +5,22 @@ public class ArrowTrajectory
 {
     private readonly SpriteShapeController _spriteShape;
 
+    private float _rangeMultiplier = 3f;
+
     public ArrowTrajectory(SpriteShapeController spriteShape)
     {
         _spriteShape = spriteShape;
     }
 
-    public void Update(Vector2 direction)
+    public void Update(Vector2 velocity)
     {
         if (_spriteShape.gameObject.activeSelf == false)
             _spriteShape.gameObject.SetActive(true);
 
         for (int i = 0; i < _spriteShape.spline.GetPointCount(); i++)
         {
-            direction += 9.8f * Time.fixedDeltaTime * Vector2.down;
-            _spriteShape.spline.SetPosition(i, 2f * i * Time.fixedDeltaTime * direction);
+            velocity += _rangeMultiplier * Time.fixedDeltaTime * Physics2D.gravity;
+            _spriteShape.spline.SetPosition(i, _rangeMultiplier * 2.175f * i * Time.fixedDeltaTime * velocity);
         }
     }
 }
