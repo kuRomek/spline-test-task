@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Misc
+namespace ArrowControl
 {
     [RequireComponent(typeof(Collider2D))]
     public class ArrowPuller : MonoBehaviour

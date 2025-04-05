@@ -1,5 +1,5 @@
 ﻿using Input;
-using Misc;
+using ArrowControl;
 using StructureElements;
 using System;
 using UnityEngine;
@@ -27,14 +27,14 @@ namespace ArcherControl
 
         public void Enable()
         {
-            _input.ClickedOnScreen += OnScreenClicked;
-            _input.PressCanceled += CancelPulling;
+            _input.ClickedOnScreen += TryPullArrow;
+            _input.PressCanceled += OnMouseReleased;
         }
 
         public void Disable()
         {
-            _input.ClickedOnScreen -= OnScreenClicked;
-            _input.PressCanceled -= CancelPulling;
+            _input.ClickedOnScreen -= TryPullArrow;
+            _input.PressCanceled -= OnMouseReleased;
         }
 
         public void Update(float deltaTime)
@@ -46,7 +46,7 @@ namespace ArcherControl
             }
         }
 
-        private void OnScreenClicked(Vector2 mousePosition)
+        private void TryPullArrow(Vector2 mousePosition)
         {
             _isPullingArrow = _arrowPuller.IsTouching(mousePosition);
 
@@ -54,7 +54,7 @@ namespace ArcherControl
                 PullingStarted?.Invoke();
         }
 
-        private void CancelPulling()
+        private void OnMouseReleased()
         {
             if (_isPullingArrow == false)
                 return;
@@ -64,10 +64,10 @@ namespace ArcherControl
             PullingCanceled?.Invoke();
         }
 
-        public void ThrowArrow(Vector2 velocity, Vector2 startPositino)
+        public void ShootArrow(Vector2 direction, Vector2 startPositino)
         {
             _arrow.transform.position = startPositino;
-            _arrow.Throw(velocity);
+            _arrow.AddForce(direction);
         }
     }
 }

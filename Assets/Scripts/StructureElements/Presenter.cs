@@ -21,11 +21,7 @@ namespace StructureElements
         private void OnEnable()
         {
             if (_model != null)
-            {
                 _model.Moved += OnMoved;
-                _model.Rotated += OnRotated;
-                _model.Destroying += OnDestroying;
-            }
 
             _activatable?.Enable();
 
@@ -36,11 +32,7 @@ namespace StructureElements
         private void OnDisable()
         {
             if (_model != null)
-            {
                 _model.Moved -= OnMoved;
-                _model.Rotated -= OnRotated;
-                _model.Destroying -= OnDestroying;
-            }
 
             _activatable?.Disable();
 
@@ -65,31 +57,12 @@ namespace StructureElements
                 _view.enabled = true;
 
             OnMoved();
-            OnRotated();
-            OnScaled();
         }
 
         private void OnMoved()
         {
             if (_model != null)
                 transform.position = _model.Position;
-        }
-
-        private void OnRotated()
-        {
-            if (_model != null)
-                transform.rotation = _model.Rotation;
-        }
-
-        private void OnScaled()
-        {
-            if (_model != null)
-                transform.localScale = _model.Scale;
-        }
-
-        private void OnDestroying()
-        {
-            Destroy(gameObject);
         }
     }
 }

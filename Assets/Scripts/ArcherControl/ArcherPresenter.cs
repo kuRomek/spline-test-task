@@ -18,9 +18,9 @@ namespace ArcherControl
             if (Model != null)
             {
                 Model.PullingStarted += View.StartPullingArrow;
-                Model.PullingArrow += View.PullArrowBone;
-                Model.PullingCanceled += View.OnPullingCanceled;
-                View.ThrowingArrow += Model.ThrowArrow;
+                Model.PullingArrow += View.PullArrow;
+                Model.PullingCanceled += View.ShootArrow;
+                View.ShootingArrow += Model.ShootArrow;
             }
         }
 
@@ -29,9 +29,9 @@ namespace ArcherControl
             if (Model != null)
             {
                 Model.PullingStarted -= View.StartPullingArrow;
-                Model.PullingArrow -= View.PullArrowBone;
-                Model.PullingCanceled -= View.OnPullingCanceled;
-                View.ThrowingArrow -= Model.ThrowArrow;
+                Model.PullingArrow -= View.PullArrow;
+                Model.PullingCanceled -= View.ShootArrow;
+                View.ShootingArrow -= Model.ShootArrow;
             }
         }
     }

@@ -1,6 +1,6 @@
 using ArcherControl;
 using Input;
-using Misc;
+using ArrowControl;
 using UnityEngine;
 
 namespace LevelSetup
